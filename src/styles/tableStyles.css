@@ -1,0 +1,57 @@
+/* Container settings */
+  .table-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Table structure */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  /* Header styling */
+  thead {
+    background-color: #11b22f; /* Dark grayish/blue */
+    color: #6c8ba9; /* Off-white */
+  }
+  thead th {
+    padding: 12px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Row styling */
+  tbody td {
+    padding: 12px 16px;
+    text-align: center;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #769332; /* Light gray */
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #e03fcd; /* White */
+  }
+  tbody tr:hover {
+    background-color: #97a8c1; /* Slightly darker for hover effect */
+  }
+  
+  /* Plus button styling */
+  .plus-btn {
+    background-color: #000000; /* Modern blue */
+    border: none;
+    color: rgb(184, 35, 35);
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  .plus-btn:hover {
+    background-color: #2563eb; /* Darker blue on hover */
+  }

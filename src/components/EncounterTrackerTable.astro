@@ -1,0 +1,37 @@
+---
+const creaturesData = [
+  { level: -1, xp: 20, maxCreat: 4, creatLeft: 4 },
+  { level: 0, xp: 30, maxCreat: 2, creatLeft: 2 },
+  { level: 1, xp: 40, maxCreat: 2, creatLeft: 2 },
+  { level: 2, xp: 60, maxCreat: 1, creatLeft: 1 },
+  { level: 3, xp: 80, maxCreat: 1, creatLeft: 1 },
+];
+import "../styles/tableStyles.css";
+---
+ 
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Creatures Lvl</th>
+        <th>XP</th>
+        <th>Max Creat.</th>
+        <th>Creat. Left</th>
+        <th>Cart Icon</th>
+      </tr>
+    </thead>
+    <tbody>
+      {creaturesData.map(creature => (
+        <tr>
+          <td>{creature.level}</td>
+          <td>{creature.xp}</td>
+          <td>{creature.maxCreat}</td>
+          <td>{creature.creatLeft}</td>
+          <td>
+            <button class="plus-btn">+</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

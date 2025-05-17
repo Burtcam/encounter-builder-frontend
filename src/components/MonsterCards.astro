@@ -1,0 +1,215 @@
+---
+const monsters = [
+  {
+    name: "Goblin",
+    level: 1,
+    hp: 15,
+    ac: 16,
+    type: "Humanoid",
+    traits: ["sneaky", "agile"],
+    description: "Small, sneaky creatures with a knack for mischief."
+  },
+  {
+    name: "Orc",
+    level: 2,
+    hp: 30,
+    ac: 17,
+    type: "Humanoid",
+    traits: ["brutish", "strong"],
+    description: "Brutish warriors with a fierce reputation."
+  },
+  {
+    name: "Troll",
+    level: 4,
+    hp: 45,
+    ac: 18,
+    type: "Giant",
+    traits: ["regenerative", "fierce"],
+    description: "Regenerates quickly and poses a significant challenge."
+  },
+  {
+    name: "Young Red Dragon",
+    level: 10,
+    hp: 150,
+    ac: 22,
+    type: "Dragon",
+    traits: ["fire", "flying", "cunning"],
+    description: "A fearsome creature with fiery breath and cunning intelligence."
+  }
+];
+---
+
+<style>
+  /* Grid container for monster cards */
+  .monster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem auto;
+    max-width: 1000px;
+  }
+  /* Styling for each monster card */
+  .monster-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+  /* Visual cues for dragging */
+  .monster-card.dragging {
+    opacity: 0.5;
+  }
+  .monster-card.over {
+    border: 2px dashed #3498db;
+  }
+  /* Monster card header */
+  .monster-header {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  /* Monster stat details */
+  .monster-detail {
+    font-size: 0.9rem;
+    margin: 0.2rem 0;
+    color: #34495e;
+  }
+  /* Monster description text */
+  .monster-description {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 0.5rem;
+  }
+  /* Select button styling */
+  .select-button {
+    margin-top: 1rem;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .select-button:hover {
+    background-color: #2980b9;
+  }
+</style>
+
+<!-- Render the cards – each card has a data-index and draggable attribute -->
+<div class="monster-grid" id="monster-list">
+  {monsters.map((monster, idx) => (
+    <div class="monster-card" data-index={idx} draggable="true">
+      <div class="monster-header">{monster.name}</div>
+      <div class="monster-detail">Level: {monster.level}</div>
+      <div class="monster-detail">HP: {monster.hp}</div>
+      <div class="monster-detail">AC: {monster.ac}</div>
+      <div class="monster-detail">Type: {monster.type}</div>
+      <div class="monster-detail">Traits: {monster.traits.join(', ')}</div>
+      <div class="monster-description">{monster.description}</div>
+      <button class="select-button">Select</button>
+    </div>
+  ))}
+</div>
+
+<!-- Embed the monsters data as JSON for the client-side script -->
+<script type="application/json" id="monsters-data">
+  {JSON.stringify(monsters)}
+</script>
+
+<script type="module">
+  // Retrieve the container and initial monster data
+  const monsterListEl = document.getElementById('monster-list');
+  let monstersData = JSON.parse(document.getElementById('monsters-data').textContent);
+  
+  let dragSrcEl = null;
+
+  // Handler for drag start: mark the dragged element and store its index
+  function handleDragStart(e) {
+    dragSrcEl = this;
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', this.getAttribute('data-index'));
+  }
+
+  // Allow an element to be a drop target by preventing default behavior
+  function handleDragOver(e) {
+    if (e.preventDefault) e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+  }
+
+  // Visual cue when a dragged element enters a drop zone
+  function handleDragEnter(e) {
+    this.classList.add('over');
+  }
+
+  // Remove visual cue when leaving the drop zone
+  function handleDragLeave(e) {
+    this.classList.remove('over');
+  }
+
+  // When a drop occurs, grab the source and target indexes and swap them in the array
+  function handleDrop(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    this.classList.remove('over');
+  
+    const sourceIndex = parseInt(e.dataTransfer.getData('text/plain'));
+    const targetIndex = parseInt(this.getAttribute('data-index'));
+  
+    if (sourceIndex !== targetIndex) {
+      [monstersData[sourceIndex], monstersData[targetIndex]] = [monstersData[targetIndex], monstersData[sourceIndex]];
+      renderMonsters(monstersData);
+      attachDragAndDropEvents();
+    }
+    return false;
+  }
+  
+  // Clean up styling after dragging ends
+  function handleDragEnd(e) {
+    this.classList.remove('dragging');
+    document.querySelectorAll('.monster-card').forEach(card => card.classList.remove('over'));
+  }
+  
+  // Re-render the monster cards based on the updated order
+  function renderMonsters(monsters) {
+    monsterListEl.innerHTML = '';
+    monsters.forEach((monster, idx) => {
+      const card = document.createElement('div');
+      card.className = 'monster-card';
+      card.setAttribute('data-index', idx);
+      card.setAttribute('draggable', 'true');
+      card.innerHTML = `
+        <div class="monster-header">${monster.name}</div>
+        <div class="monster-detail">Level: ${monster.level}</div>
+        <div class="monster-detail">HP: ${monster.hp}</div>
+        <div class="monster-detail">AC: ${monster.ac}</div>
+        <div class="monster-detail">Type: ${monster.type}</div>
+        <div class="monster-detail">Traits: ${monster.traits.join(', ')}</div>
+        <div class="monster-description">${monster.description}</div>
+        <button class="select-button">Select</button>
+      `;
+      monsterListEl.appendChild(card);
+    });
+  }
+  
+  // Attach drag & drop event listeners to all monster cards
+  function attachDragAndDropEvents() {
+    const cards = document.querySelectorAll('.monster-card');
+    cards.forEach(card => {
+      card.addEventListener('dragstart', handleDragStart, false);
+      card.addEventListener('dragenter', handleDragEnter, false);
+      card.addEventListener('dragover', handleDragOver, false);
+      card.addEventListener('dragleave', handleDragLeave, false);
+      card.addEventListener('drop', handleDrop, false);
+      card.addEventListener('dragend', handleDragEnd, false);
+    });
+  }
+  
+  // Initialize the drag-and-drop functionality on page load
+  attachDragAndDropEvents
