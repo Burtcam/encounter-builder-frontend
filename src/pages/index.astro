@@ -4,9 +4,22 @@ import Layout from '../layouts/Layout.astro';
 import MonsterInfoCard from '../components/CardComponent';
 import abbotOfAbadar from '../../types/abbotOfAbadar'
 import ScrollableCardBackground from '../../structures/ScrollableCardBackground'
+import DynamicTable from '../components/table';
+import EncounterSettings from '../components/EncounterPicker'
+
+const testColumns = ["Creature Lvl", "XP", "Max Creature", "Creatures Left", "Selected"];
+
+const testRows = [
+  { "Creature Lvl": "-1", XP: "20", "Max Creature": 4, "Creatures Left": 4, Selected: 0 },
+  {"Creature Lvl": "0", XP: "30", "Max Creature": 2, "Creatures Left": 2, Selected: 0 },
+  { "Creature Lvl": "1", XP: "40", "Max Creature": 2, "Creatures Left": 2, Selected: 0 },
+  { "Creature Lvl": "2", XP: "60", "Max Creature": 1, "Creatures Left": 1, Selected: 0 },
+  { "Creature Lvl": "3", XP: "80", "Max Creature": 1, "Creatures Left": 1, Selected: 0 },
+];
 ---
 
 <Layout>
+	<DynamicTable columns={testColumns} rows={testRows} />
 	<ScrollableCardBackground>
   <!-- Use client:load to render the component on the client -->
   		<MonsterInfoCard client:load monster={abbotOfAbadar} />
@@ -25,4 +38,6 @@ import ScrollableCardBackground from '../../structures/ScrollableCardBackground'
 		<MonsterInfoCard client:load monster={abbotOfAbadar} />
 		<MonsterInfoCard client:load monster={abbotOfAbadar} />
   	</ScrollableCardBackground>
+	<EncounterSettings client:visible />
+	
 </Layout>
