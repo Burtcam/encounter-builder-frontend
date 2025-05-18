@@ -1,13 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import EncounterTrackerTable from '../components/EncounterTrackerTable.astro';
-import MonsterCards from '../components/MonsterCards.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Define the 'card' variable
+import MonsterInfoCard from '../components/CardComponent';
+import abbotOfAbadar from '../../types/abbotOfAbadar'
+import ScrollableCardBackground from '../../structures/ScrollableCardBackground'
 ---
 
 <Layout>
-	<EncounterTrackerTable />
-	<MonsterCards />
+	<ScrollableCardBackground>
+  <!-- Use client:load to render the component on the client -->
+  		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+		<MonsterInfoCard client:load monster={abbotOfAbadar} />
+  	</ScrollableCardBackground>
 </Layout>

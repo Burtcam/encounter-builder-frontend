@@ -9,6 +9,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.7.13"
+    "@astrojs/react": "^4.2.7",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^7.1.0",
+    "astro": "^5.7.13",
+    "mui": "^0.0.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-draggable": "^4.4.6"
   }
 }
